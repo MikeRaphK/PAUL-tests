@@ -1,0 +1,8 @@
+There are 5 buggy functions in the `src/` directory that are not working correctly and are causing their corresponding tests in the `tests/` directory to fail.
+Your task is to analyze which functions are failing by running pytest, then make only the minimal changes necessary to the implementation in `src/` files so that all tests pass.
+Do not modify any files in the `tests/` directory for any reason, even if a test is failing.
+Use the tests only as a reference to guide your repairs in `src/`.
+After making the fixes, verify your changes by running pytest again to confirm all tests pass.
+
+**Example:**
+If `reverse_string.py` contains a function that is not reversing a string properly and `test_reverse_string.py` has tests for this function, you should only update the function in `src/reverse_string.py` so that all tests in `tests/test_reverse_string.py` pass. Never update the test file itself.
