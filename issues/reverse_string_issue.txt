@@ -1,0 +1,5 @@
+The file `src/reverse_string.py` contains a buggy function. 
+Its correctness is tested in `tests/test_reverse_string.py`. 
+Your task is to fix the function(s) in `src/reverse_string.py` so that all tests in `tests/test_reverse_string.py` pass. 
+Do not modify any files in the `tests/` directory. Use the tests only as a reference to guide your fix. 
+After making changes, verify your solution by running `pytest tests/test_reverse_string.py`.

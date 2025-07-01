@@ -1,0 +1,5 @@
+The file `src/middle_element.py` contains a buggy function. 
+Its correctness is tested in `tests/test_middle_element.py`. 
+Your task is to fix the function(s) in `src/middle_element.py` so that all tests in `tests/test_middle_element.py` pass. 
+Do not modify any files in the `tests/` directory. Use the tests only as a reference to guide your fix. 
+After making changes, verify your solution by running `pytest tests/test_middle_element.py`.

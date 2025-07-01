@@ -1,0 +1,5 @@
+The file `src/list_deduplicator.py` contains a buggy function. 
+Its correctness is tested in `tests/test_list_deduplicator.py`. 
+Your task is to fix the function(s) in `src/list_deduplicator.py` so that all tests in `tests/test_list_deduplicator.py` pass. 
+Do not modify any files in the `tests/` directory. Use the tests only as a reference to guide your fix. 
+After making changes, verify your solution by running `pytest tests/test_list_deduplicator.py`.
