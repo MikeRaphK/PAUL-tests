@@ -34,7 +34,7 @@ if __name__ == "__main__":
         name = src_file.stem
         test_file = test_dir / f"test_{name}.py"
         issue_file = issue_dir / f"{name}_issue.txt"
-        print(f"=============== {name}' ===============")
+        print(f"=============== {name} ===============")
 
         # Make sure the test fails first
         pytest_cmd = ["pytest", test_file]
