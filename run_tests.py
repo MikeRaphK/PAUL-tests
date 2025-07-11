@@ -34,7 +34,7 @@ if __name__ == "__main__":
         name = src_file.stem
         test_file = test_dir / f"test_{name}.py"
         issue_file = issue_dir / f"{name}_issue.txt"
-        print(f"Running PAUL on {issue_file}'...")
+        print(f"=============== {name}' ===============")
 
         # Make sure the test fails first
         pytest_cmd = ["pytest", test_file]
@@ -48,11 +48,11 @@ if __name__ == "__main__":
 
         # Run PAUL
         paul_cmd = ["python3", PAUL, "local", "--path", REPO, "--issue", issue_file]
-        result = subprocess.run(paul_cmd)
-        if result.returncode != 0:
-            print("PAUL failed to run successfully. Exiting...")
-            sys.exit(1)
-        output = result.stdout
+        output = ""
+        with subprocess.Popen(paul_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as proc:
+            for line in proc.stdout:
+                print(line, end='')   # Print live
+                output += line        # Collect output
 
         # Re-hash and compare test file
         new_test_hash = hash_file(test_file)
@@ -71,8 +71,6 @@ if __name__ == "__main__":
         if not match:
             print(f"Could not find cost for {issue_file}. Exiting...")
             sys.exit(1)
-        cost = float(match.group(1))
-        total_cost += cost
-        print(f"'{test_file}' debugged successfully! Cost: ${cost:.6f}\n\n")
+        total_cost += float(match.group(1))
 
     print(f"All tests completed successfully with ${total_cost:.6f} total cost.")
