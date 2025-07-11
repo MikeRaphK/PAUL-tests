@@ -1,8 +1,13 @@
 from pathlib import Path
 
+import hashlib
 import re
 import subprocess
 import sys
+
+def hash_file(path):
+    with open(path, "rb") as f:
+        return hashlib.sha256(f.read()).hexdigest()
 
 if __name__ == "__main__":
     # Get path
@@ -38,6 +43,9 @@ if __name__ == "__main__":
             print(f"ERROR: Test 'pytest {test_file}' did not fail as expected. Exiting...")
             sys.exit(1)
 
+        # Hash test file before running PAUL
+        original_test_hash = hash_file(test_file)
+
         # Run PAUL
         paul_cmd = ["python3", PAUL, "local", "--path", REPO, "--issue", issue_file]
         result = subprocess.run(paul_cmd, capture_output=True, text=True)
@@ -51,7 +59,13 @@ if __name__ == "__main__":
             print("Exiting...")
             sys.exit(1)
         output = result.stdout
-            
+
+        # Re-hash and compare test file
+        new_test_hash = hash_file(test_file)
+        if new_test_hash != original_test_hash:
+            print(f"ERROR: Test file '{test_file}' was modified during repair. Exiting...")
+            sys.exit(1)
+
         # Make sure the test passes after
         result = subprocess.run(pytest_cmd, capture_output=True)
         if result.returncode != 0:
