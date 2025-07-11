@@ -48,15 +48,9 @@ if __name__ == "__main__":
 
         # Run PAUL
         paul_cmd = ["python3", PAUL, "local", "--path", REPO, "--issue", issue_file]
-        result = subprocess.run(paul_cmd, capture_output=True, text=True)
+        result = subprocess.run(paul_cmd)
         if result.returncode != 0:
-            print("PAUL failed to run successfully!")
-            print("Return code:", result.returncode)
-            print("---------- PAUL STDOUT ----------")
-            print(result.stdout)
-            print("---------- PAUL STDERR ----------")
-            print(result.stderr)
-            print("Exiting...")
+            print("PAUL failed to run successfully. Exiting...")
             sys.exit(1)
         output = result.stdout
 
