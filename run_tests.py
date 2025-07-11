@@ -29,7 +29,7 @@ if __name__ == "__main__":
         name = src_file.stem
         test_file = test_dir / f"test_{name}.py"
         issue_file = issue_dir / f"{name}_issue.txt"
-        print(f"Running PAUL on {issue_file}'\n")
+        print(f"Running PAUL on {issue_file}'...")
 
         # Make sure the test fails first
         pytest_cmd = ["pytest", test_file]
@@ -48,6 +48,8 @@ if __name__ == "__main__":
             print(result.stdout)
             print("---------- PAUL STDERR ----------")
             print(result.stderr)
+            print("Exiting...")
+            sys.exit(1)
         output = result.stdout
             
         # Make sure the test passes after
@@ -61,6 +63,8 @@ if __name__ == "__main__":
         if not match:
             print(f"Could not find cost for {issue_file}. Exiting...")
             sys.exit(1)
-        total_cost += float(match.group(1))
+        cost = float(match.group(1))
+        total_cost += cost
+        print(f"'{test_file}' debugged successfully! Cost: ${cost:.6f}\n\n")
 
-    print(f"All tests completed successfully with {total_cost:.6f} total cost.")
+    print(f"All tests completed successfully with ${total_cost:.6f} total cost.")
