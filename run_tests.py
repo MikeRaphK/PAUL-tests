@@ -11,12 +11,11 @@ def hash_file(path):
 
 if __name__ == "__main__":
     # Get path
-    if len(sys.argv) != 3:
-        print(f"Usage: python3 {sys.argv[0]} <PAUL main.py path> <PAUL-tests path>")
-        print(f"Example: python3 {sys.argv[0]} /app/main.py ./local/PAUL-tests/")
+    if len(sys.argv) != 2:
+        print(f"Usage: python3 {sys.argv[0]} <PAUL-tests path>")
+        print(f"Example: python3 {sys.argv[0]} ./local/PAUL-tests/")
         sys.exit(1)
-    PAUL = sys.argv[1]
-    REPO = sys.argv[2]
+    REPO = sys.argv[1]
 
     # Get directories
     src_dir = Path(f"{REPO}/src")
@@ -47,7 +46,7 @@ if __name__ == "__main__":
         original_test_hash = hash_file(test_file)
 
         # Run PAUL
-        paul_cmd = ["python3", PAUL, "local", "--path", REPO, "--issue", issue_file]
+        paul_cmd = ["paul", "local", "--path", REPO, "--issue", issue_file]
         output = ""
         with subprocess.Popen(paul_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as proc:
             for line in proc.stdout:
