@@ -46,7 +46,7 @@ if __name__ == "__main__":
         original_test_hash = hash_file(test_file)
 
         # Run PAUL
-        paul_cmd = ["paul", "local", "--path", REPO, "--issue", issue_file]
+        paul_cmd = ["paul", "local", "--path", REPO, "--issue", issue_file, "--tests", test_file]
         output = ""
         with subprocess.Popen(paul_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as proc:
             for line in proc.stdout:
