@@ -24,10 +24,14 @@ if __name__ == "__main__":
 
     # For each Python file in the source directory
     total_cost = 0.0
+    total_tests = 0
+    passed_tests = 0
     for src_file in src_dir.glob("*.py"):
         # Skip __init__.py
         if src_file.name == "__init__.py":
             continue
+        
+        total_tests += 1
 
         # Prepare file paths
         name = src_file.stem
@@ -53,23 +57,30 @@ if __name__ == "__main__":
                 print(line, end='')   # Print live
                 output += line        # Collect output
 
+        # Check if PAUL was successful
+        test_passed = True
+
         # Re-hash and compare test file
         new_test_hash = hash_file(test_file)
         if new_test_hash != original_test_hash:
-            print(f"ERROR: Test file '{test_file}' was modified during repair. Exiting...")
-            sys.exit(1)
+            print(f"ERROR: Test file '{test_file}' was modified during repair.")
+            test_passed = False
 
         # Make sure the test passes after
         result = subprocess.run(pytest_cmd, capture_output=True)
         if result.returncode != 0:
-            print(f"ERROR: Test 'pytest {test_file}' did not pass as expected. Exiting...")
-            sys.exit(1)
+            print(f"ERROR: Test 'pytest {test_file}' did not pass as expected.")
+            test_passed = False
 
         # Find the cost
         match = re.search(r"Total Cost \(USD\):\s*([0-9.]+)", output)
         if not match:
-            print(f"Could not find cost for {issue_file}. Exiting...")
-            sys.exit(1)
-        total_cost += float(match.group(1))
+            print(f"Could not find cost for {issue_file}.")
+        else:
+            total_cost += float(match.group(1))
 
-    print(f"All tests completed successfully with ${total_cost:.6f} total cost.")
+        # Check if PAUL was successful
+        if test_passed:
+            passed_tests += 1
+
+    print(f"{passed_tests} out of {total_tests} completed successfully with ${total_cost:.6f} total cost.")
