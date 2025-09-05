@@ -83,4 +83,4 @@ if __name__ == "__main__":
         if test_passed:
             passed_tests += 1
 
-    print(f"{passed_tests} out of {total_tests} completed successfully with ${total_cost:.6f} total cost.")
+    print(f"{passed_tests} out of {total_tests} tests completed successfully with ${total_cost:.6f} total cost.")
