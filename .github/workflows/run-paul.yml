@@ -1,0 +1,39 @@
+name: "Run PAUL"
+
+on:
+  # Workflow is triggered automatically when an issue is opened, reopened or edited.
+  issues:
+    types: [opened, reopened, edited]
+  # Workflow can be triggered with a click of a button. User inputs issue number.
+  workflow_dispatch:
+    inputs:
+      dispatch_issue_number:
+        description: "Issue Number"
+        required: true
+
+# Need this for PAUL to make changes and open PRs
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  run-paul:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mikeraphk/paul:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run PAUL
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.PAUL_GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number || github.event.inputs.dispatch_issue_number }}
+        run: |
+          paul github \
+            --owner "${{ github.repository_owner }}" \
+            --repo "${{ github.event.repository.name }}" \
+            --issue "$ISSUE_NUMBER" \
+            --model "gpt-4o-mini"
